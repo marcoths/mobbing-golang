@@ -5,12 +5,24 @@ import (
 	"strings"
 )
 
-func PlayerServer(w http.ResponseWriter, req *http.Request) {
+type PlayerStore interface {
+	GetPlayerScore(name string) string
+}
 
-	player := strings.TrimPrefix(req.URL.Path, "/players/")
-	score := GetPlayerScore(player)
+type PlayerServer struct {
+	Store PlayerStore
+}
+
+func (p *PlayerServer) ServeHTTP(w http.ResponseWriter, r *http.Request)  {
+	player := strings.TrimPrefix(r.URL.Path, "/players/")
+	score := p.Store.GetPlayerScore(player)
+	if score == "" {
+		w.WriteHeader(http.StatusNotFound)
+	}
+
 	w.Write([]byte(score))
 }
+
 func GetPlayerScore(name string) string {
 	if name == "Mikael" {
 		return "20"
