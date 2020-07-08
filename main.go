@@ -9,11 +9,14 @@ import (
 )
 
 type InMemoryPlayerStore struct {
-
 }
 
-func (receiver *InMemoryPlayerStore) GetPlayerScore(name string) string {
+func (i *InMemoryPlayerStore) GetPlayerScore(name string) string {
 	return "123"
+}
+
+func (i *InMemoryPlayerStore) RecordWin(name string) {
+
 }
 
 func main() {
